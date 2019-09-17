@@ -1,11 +1,10 @@
-// /*
-//  * @Author: web_XL
-//  * @Date: 2019-09-16 21:51:11
-//  * @Last Modified by: web_XL
-//  * @Last Modified time: 2019-09-16 22:32:38
-//  */
-import { isArray } from 'util'
-import { isDate, isObject } from './utils'
+/*
+ * @Author: web_XL
+ * @Date: 2019-09-16 21:51:11
+ * @Last Modified by: web_XL
+ * @Last Modified time: 2019-09-17 17:13:49
+ */
+import { isDate, isObject, isPlainObject } from './utils'
 // 拼接url
 
 function encode(val: string): string {
@@ -30,6 +29,8 @@ export const buildUrl = function(url: string, params?: any): string {
     if (value === null || typeof value === 'undefined') {
       return // forEach是无法通过return 或者break 结束循环的
     }
+
+    // 此处 只是为了将 数组情况和 非数组情况兼容
     let values = []
     if (Array.isArray(value)) {
       values = value
@@ -41,7 +42,7 @@ export const buildUrl = function(url: string, params?: any): string {
     values.forEach(val => {
       if (isDate(val)) {
         val = val.toISOString()
-      } else if (isObject(val)) {
+      } else if (isPlainObject(val)) {
         val = JSON.stringify(val)
       }
       parts.push(`${encode(key)}=${encode(val)}`)
@@ -60,58 +61,3 @@ export const buildUrl = function(url: string, params?: any): string {
   }
   return url
 }
-// import { isDate, isObject } from './utils'
-
-// function encode(val: string): string {
-//   return encodeURIComponent(val)
-//     .replace(/%40/g, '@')
-//     .replace(/%3A/gi, ':')
-//     .replace(/%24/g, '$')
-//     .replace(/%2C/gi, ',')
-//     .replace(/%20/g, '+')
-//     .replace(/%5B/gi, '[')
-//     .replace(/%5D/gi, ']')
-// }
-
-// export function buildUrl(url: string, params?: any) {
-//   if (!params) {
-//     return url
-//   }
-
-//   const parts: string[] = []
-
-//   Object.keys(params).forEach((key) => {
-//     let val = params[key]
-//     if (val === null || typeof val === 'undefined') {
-//       return
-//     }
-//     let values: string[]
-//     if (Array.isArray(val)) {
-//       values = val
-//       key += '[]'
-//     } else {
-//       values = [val]
-//     }
-//     values.forEach((val) => {
-//       if (isDate(val)) {
-//         val = val.toISOString()
-//       } else if (isObject(val)) {
-//         val = JSON.stringify(val)
-//       }
-//       parts.push(`${encode(key)}=${encode(val)}`)
-//     })
-//   })
-
-//   let serializedParams = parts.join('&')
-
-//   if (serializedParams) {
-//     const markIndex = url.indexOf('#')
-//     if (markIndex !== -1) {
-//       url = url.slice(0, markIndex)
-//     }
-
-//     url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams
-//   }
-
-//   return url
-// }

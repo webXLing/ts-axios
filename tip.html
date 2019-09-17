@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+  // 采用Object.keys(obj).forEach 遍历对象的原因
+  // 1.for of 不能遍历对象  而for in 可以
+  // 2.for in虽然可以遍历对象 但是他会遍历对象上所有可枚举的属性 包括原型上的
+  //   2.1 若不想 遍历原型上的属性 可以同过for in + hasOwnProperty 
+  //   2.2 hasOwnProperty 对象自身是否含有某个属性 不会向原型链去查找
+  //   2.3 in 也是检测对象是否含有某个属性 会向原型链去查找
+
+  let obj = {}
+  Object.keys(obj).forEach(key => {
+
+  })
+
+  Object.prototype.job = 'web'
+  Object.defineProperty(Object.prototype, "mykey", {
+    enumerable: false,
+    configurable: false,
+    writable: false,
+    value: "static"
+  });
+  console.log('Object.prototype', Object.prototype);
+
+  let myObj = {
+    name: 'xl',
+    age: 24
+  }
+  // hasOwnProperty 对象自身是否含有某个属性 不会向原型链去查找
+  // in 也是检测对象是否含有某个属性 会向原型链去查找
+
+  console.log(myObj.hasOwnProperty('ni'));
+  console.log(myObj.hasOwnProperty('job'));
+  console.log('job' in myObj); // 
+
+  // for in  会遍历该对象的可枚举的属性 包括原型上的  
+  // Object 原型上的toString等方法 之所以遍历不是来因为 这个是不可枚举的
+  for (const key in myObj) {
+    console.log('key', key); // name age job
+
+    if (myObj.hasOwnProperty(key)) {
+      console.log('hasOwnProperty key', key);
+      const element = myObj[key];
+    }
+  }
+  for (const iterator of [1, 2]) {
+    console.log('iterator', iterator);
+  }
+
+  // Object.prototype.toString()去检测类型
+
+  // Q:Object.prototype.toString.call([])  与 Object.prototype.toString([]) 结果不相同 ？
+  // Object.prototype.toString([]) === "[object Object]"
+  // Object.prototype.toString.call([]) === "[object Array]"
+</script>
+
+</html>

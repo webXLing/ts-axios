@@ -37,6 +37,44 @@ router.get('/base/get', function (req, res) {
   res.json(req.query)
 })
 
+// post
+router.post('/base/post', function (req, res) {
+  res.send(req.body)
+  // res.json(req.body)
+})
+
+router.post('/base/buffer', function (req, res) {
+  // res.send(req.body)
+  let msg = []
+  req.on('data', chunk => {
+    console.log('接收数据中');
+
+    console.log();
+    if (chunk) {
+      msg.push(chunk)
+    }
+  })
+  req.on('end', () => {
+    let buf = Buffer.concat(msg)
+    res.json(buf.toJSON())
+  })
+})
+// router.post('/base/buffer', function (req, res) {
+//   let msg = []
+//   req.on('data', (chunk) => {
+//     console.log('接收数据中');
+//     console.log(chunk);
+
+//     if (chunk) {
+//       msg.push(chunk)
+//     }
+//   })
+//   req.on('end', () => {
+//     let buf = Buffer.concat(msg)
+//     res.json(buf.toJSON())
+//   })
+// })
+
 app.use(router)
 
 const port = process.env.PORT || 8080
