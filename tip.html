@@ -57,12 +57,29 @@
   for (const iterator of [1, 2]) {
     console.log('iterator', iterator);
   }
-
   // Object.prototype.toString()去检测类型
 
   // Q:Object.prototype.toString.call([])  与 Object.prototype.toString([]) 结果不相同 ？
   // Object.prototype.toString([]) === "[object Object]"
   // Object.prototype.toString.call([]) === "[object Array]"
+
+  // Promise 的链式调用
+  let fn1 = new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        msg: 'xl'
+      })
+    }, 100);
+  })
+  fn1.then(res => {
+    console.log('第一个res', res);
+    return {
+      age: 1
+    }
+  }).then(res => {
+    console.log('第er个res', res);
+
+  })
 </script>
 
 </html>

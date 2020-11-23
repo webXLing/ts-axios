@@ -75,6 +75,25 @@ router.post('/base/buffer', function (req, res) {
 //   })
 // })
 
+router.get('/error/get', (req, res) => {
+  if (Math.random() > .5) {
+    res.json({
+      msg: 'ok'
+    })
+  } else {
+    res.status(500);
+    res.end()
+  }
+})
+
+router.get('/error/timeout', (req, res) => {
+  setTimeout(() => {
+    res.json({
+      msg: 'ok'
+    })
+  }, 3000);
+})
+
 app.use(router)
 
 const port = process.env.PORT || 8080

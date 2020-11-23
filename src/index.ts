@@ -2,18 +2,25 @@
  * @Author: web_XL
  * @Date: 2019-08-20 21:20:00
  * @Last Modified by: web_XL
- * @Last Modified time: 2019-09-17 21:55:12
+ * @Last Modified time: 2019-09-18 16:52:54
  */
-import { AxiosRequestConfig } from './types'
+import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from './types'
 import { buildUrl } from './helpers/url'
 import { processHeaders } from './helpers/headers'
-import { transformRequest } from './helpers/data'
+import { transformRequest, transformData } from './helpers/data'
 
 import xhr from './xhr'
-function axios(config: AxiosRequestConfig): void {
+function axios(config: AxiosRequestConfig): AxiosPromise {
   processConfig(config) //处理 config
 
-  xhr(config)
+  return xhr(config).then(res => {
+    return transformResponseData(res)
+  })
+}
+// 若响应数据为 json字符串 自动给他转化为json 对象
+function transformResponseData(res: AxiosResponse): AxiosResponse {
+  res.data = transformData(res.data)
+  return res
 }
 
 function processConfig(config: AxiosRequestConfig): void {

@@ -80,24 +80,95 @@ import axios from '../../src/index'
 //   }
 // })
 
-axios({
-  method: 'post',
-  url: '/base/post',
-  headers: {
-    'content-type': 'application/json',
-    'Accept': 'application/json;'
-  },
-  data: {
-    a: 1,
-    b: 2
-  }
-})
+// axios({
+//   method: 'post',
+//   url: '/base/post',
+//   headers: {
+//     'content-type': 'application/json',
+//     'Accept': 'application/json;'
+//   },
+//   data: {
+//     a: 1,
+//     b: 2
+//   }
+// })
 
-const paramsString = 'q=URLUtils.searchParams&topic=api'
-const searchParams = new URLSearchParams(paramsString)
+// const paramsString = 'q=URLUtils.searchParams&topic=api'
+// const searchParams = new URLSearchParams(paramsString)
 
 // axios({
 //   method: 'post',
 //   url: '/base/post',
 //   data: searchParams
 // })
+
+
+// promise 链式调用
+// axios({
+//   method: 'post',
+//   url: '/base/post',
+//   data: {
+//     a: 1,
+//     b: 2
+//   }
+// }).then((res) => {
+//   console.log('res1', res)
+// }).catch(err => {
+//   console.log(err);
+// })
+
+// axios({
+//   method: 'post',
+//   url: '/base/post',
+//   responseType: 'json',
+//   data: {
+//     a: 3,
+//     b: 4
+//   }
+// }).then((res) => {
+//   console.log(res)
+// }).catch(err => {
+//   console.log();
+//   alert(err)
+// })
+
+// 错误捕获
+axios({
+  method: 'get',
+  url: '/error/get1'
+}).then((res) => {
+  console.log(res)
+}).catch((e) => {
+  console.log(e)
+})
+
+axios({
+  method: 'get',
+  url: '/error/get'
+}).then((res) => {
+  console.log(res)
+}).catch((e) => {
+
+  console.log('code 500', e)
+})
+
+setTimeout(() => {
+  axios({
+    method: 'get',
+    url: '/error/get'
+  }).then((res) => {
+    console.log(res)
+  }).catch((e) => {
+    console.log('code 500', e)
+  })
+}, 5000)
+
+axios({
+  method: 'get',
+  url: '/error/timeout',
+  timeout: 2000
+}).then((res) => {
+  console.log(res)
+}).catch((e) => {
+  console.log('超时', e.message)
+})
